@@ -6,8 +6,7 @@ var keys = require('./keys.js'); //keys.twitter
 
 var action = process.argv[2];
 var value = process.argv[3];
-console.log(process.argv[2]);
-console.log(action);
+
 // We will then create a switch-case statement (if-then would also work).
 // The switch-case will direct which function gets run.
 switch (action) {
@@ -29,58 +28,70 @@ switch (action) {
 };
 
 function do_what(val) {
-/*
-Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
-Feel free to change the text in that document to test out the feature for other commands.
-*/
-
+    /*
+    Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
+    It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
+    Feel free to change the text in that document to test out the feature for other commands.
+    */
 };
 
 function movie(val) {
-/*
-This will output the following information to your terminal/bash window:
+    /*
+    Title of the movie.
+    Year the movie came out.
+    IMDB Rating of the movie.
+    Country where the movie was produced.
+    Language of the movie.
+    Plot of the movie.
+    Actors in the movie.
+    Rotten Tomatoes Rating.
+    Rotten Tomatoes URL.
+    If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 
-Title of the movie.
-Year the movie came out.
-IMDB Rating of the movie.
-Country where the movie was produced.
-Language of the movie.
-Plot of the movie.
-Actors in the movie.
-Rotten Tomatoes Rating.
-Rotten Tomatoes URL.
-If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-
-If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
-It's on Netflix!
-*/
+    If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
+    It's on Netflix!
+    */
 
 };
 
 function spotify_song(val) {
-/*
-    This will show the following information about the song in your terminal/bash window
+    /*
+    Artist(s)
+    The song's name
+    A preview link of the song from Spotify
+    The album that the song is from
+    if no song is provided then your program will default to
 
-Artist(s)
-The song's name
-A preview link of the song from Spotify
-The album that the song is from
-if no song is provided then your program will default to
+    "The Sign" by Ace of Base
+    */
 
-"The Sign" by Ace of Base
-*/
+    spotify.search({
+        type: 'track',
+        query: val
+    }, function spotify_this_song(err, data) {
+        if (!data.tracks.items[0]) {
+            console.log(
+                "Artist(s): Ace of Base" + "\n" +
+                "Song: The Sign" + "\n" +
+                "Link: https://play.spotify.com/track/0hrBpAOgrt8RXigk83LLNE" + "\n" +
+                "Album: The Sign (US Album) [Remastered]"
+            );
+        } else {
+            var first_result = data.tracks.items[0];
 
-    spotify.search({ type: 'track', query: val }, function spotify_this_song(err, data) {
-        var first_result = data.tracks.items;
-    if (err) {
-        console.log('Error occurred: ' + err);
-        return;
-    };
- 
-    // Do something with 'data' 
-    console.log(first_result);
-});
+            console.log(
+                "Artist(s): " + first_result.artists[0].name + "\n" +
+                "Song: " + first_result.name + "\n" +
+                "Link: " + first_result.preview_url + "\n" +
+                "Album: " + first_result.album.name
+            );
+        };
+
+        if (err) {
+            console.log('Error occurred: ' + err);
+            return;
+        };
+    });
 };
 
 function my_tweets(keys) {
@@ -98,12 +109,10 @@ function my_tweets(keys) {
         include_rts: 1
     }, function tweets(error, tweets, response) {
         if (error) throw error;
-        for (i=0; i < tweets.length; i++) {
+        for (i = 0; i < tweets.length; i++) {
             var tweet = tweets[i];
             console.log(tweet.created_at + ": " + tweet.text + "\n");
         };
-        //console.log(tweet); // Tweet body. 
-        //console.log(response); // Raw response object. 
     });
 };
 /*
